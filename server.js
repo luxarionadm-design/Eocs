@@ -39,10 +39,10 @@ const server = http.createServer((req, res) => {
     if (err) {
       if (err.code === 'ENOENT') {
         res.writeHead(404, { 'Content-Type': 'text/html' });
-        res.end('<h1>404 - Page Not Found</h1><p>The requested resource could not be found.</p>');
+        res.end('<h1>404 - Page Not Found</h1>');
       } else {
         res.writeHead(500, { 'Content-Type': 'text/html' });
-        res.end('<h1>500 - Server Error</h1><p>An internal server error occurred.</p>');
+        res.end('<h1>500 - Server Error</h1>');
       }
     } else {
       res.writeHead(200, { 'Content-Type': contentType });
@@ -53,31 +53,18 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log('\n========================================');
-  console.log('📚 EOCS - Luxarion Documentation Server');
+  console.log('⚡ LUXARION EDITOR');
   console.log('========================================');
   console.log(`📍 Host: ${HOST}`);
   console.log(`📍 Port: ${PORT}`);
   console.log(`📍 URL: http://localhost:${PORT}`);
-  console.log(`📍 URL: http://127.0.0.1:${PORT}`);
-  console.log('========================================');
-  console.log('📦 Luxarion Library v1.0.0');
-  console.log('🌐 Server is running...');
-  console.log('📖 Documentation available at /');
   console.log('========================================\n');
 });
 
 process.on('SIGINT', () => {
-  console.log('\n🛑 Shutting down EOCS server...');
+  console.log('\n🛑 Shutting down...');
   server.close(() => {
-    console.log('✅ Server closed successfully');
-    process.exit(0);
-  });
-});
-
-process.on('SIGTERM', () => {
-  console.log('\n🛑 Shutting down EOCS server...');
-  server.close(() => {
-    console.log('✅ Server closed successfully');
+    console.log('✅ Server closed');
     process.exit(0);
   });
 });
