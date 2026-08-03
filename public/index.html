@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eocs - Luxarion Documentation</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📚 Eocs</h1>
+      <p class="subtitle">Luxarion - Complete JavaScript Utility Library</p>
+      <div class="badges">
+        <span class="badge">v1.0.0</span>
+        <span class="badge">No Dependencies</span>
+        <span class="badge">ES Module</span>
+        <span class="badge">MIT License</span>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="typedarray">Typed Arrays</button>
+      <button class="tab" data-tab="validators">Validators</button>
+      <button class="tab" data-tab="utils">Utilities</button>
+      <button class="tab" data-tab="test">Test</button>
+      <button class="tab" data-tab="docs">Documentation</button>
+    </nav>
+
+    <section id="overview" class="panel active">
+      <h2>📊 Library Overview</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>📦 Modules</h3>
+          <p id="moduleCount">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>📝 Methods</h3>
+          <p id="methodCount">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>📁 Files</h3>
+          <p id="fileCount">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>⚡ Features</h3>
+          <p id="featureCount">0</p>
+        </div>
+      </div>
+      <div class="info-box">
+        <h3>🌟 Features</h3>
+        <ul>
+          <li>✅ Hybrid Typed Arrays</li>
+          <li>✅ Flexible Typed Arrays</li>
+          <li>✅ Optimized Typed Arrays</li>
+          <li>✅ Validators (Email, URL, Phone, Password, UUID)</li>
+          <li>✅ Helpers (deepClone, deepMerge, debounce, throttle)</li>
+          <li>✅ Converters (toNumber, toString, toBase64, fromBase64)</li>
+          <li>✅ Generators (UUID, Token, OTP, Password, Salt)</li>
+          <li>✅ Formatters (Number, Currency, Date, Time, Duration)</li>
+          <li>✅ Enums (Status, Role, Permission, LogLevel)</li>
+          <li>✅ Interfaces (IValidator, IDataProcessor, IRepository, IService)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="typedarray" class="panel">
+      <h2>📊 Typed Arrays</h2>
+      <div class="demo-box">
+        <h3>HybridTypedArray</h3>
+        <div class="code-block">
+          <pre id="hybridOutput"></pre>
+        </div>
+        <div class="button-group">
+          <button onclick="runHybridTest()">▶ Run Test</button>
+        </div>
+      </div>
+      <div class="demo-box">
+        <h3>OptimizedTypedArray</h3>
+        <div class="code-block">
+          <pre id="optimizedOutput"></pre>
+        </div>
+        <div class="button-group">
+          <button onclick="runOptimizedTest()">▶ Run Test</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="validators" class="panel">
+      <h2>✅ Validators</h2>
+      <div class="demo-box">
+        <h3>Email Validator</h3>
+        <div class="input-group">
+          <input type="text" id="emailInput" placeholder="Enter email..." value="test@example.com">
+          <button onclick="validateEmail()">Validate</button>
+        </div>
+        <div id="emailResult" class="result"></div>
+      </div>
+      <div class="demo-box">
+        <h3>URL Validator</h3>
+        <div class="input-group">
+          <input type="text" id="urlInput" placeholder="Enter URL..." value="https://example.com">
+          <button onclick="validateURL()">Validate</button>
+        </div>
+        <div id="urlResult" class="result"></div>
+      </div>
+      <div class="demo-box">
+        <h3>Password Validator</h3>
+        <div class="input-group">
+          <input type="text" id="passwordInput" placeholder="Enter password..." value="Password123!">
+          <button onclick="validatePassword()">Validate</button>
+        </div>
+        <div id="passwordResult" class="result"></div>
+      </div>
+    </section>
+
+    <section id="utils" class="panel">
+      <h2>🔧 Utilities</h2>
+      <div class="demo-box">
+        <h3>Helpers</h3>
+        <div class="button-group">
+          <button onclick="testDeepClone()">Deep Clone</button>
+          <button onclick="testDeepMerge()">Deep Merge</button>
+          <button onclick="testDebounce()">Debounce</button>
+          <button onclick="testThrottle()">Throttle</button>
+        </div>
+        <div id="helpersResult" class="result"></div>
+      </div>
+      <div class="demo-box">
+        <h3>Generators</h3>
+        <div class="button-group">
+          <button onclick="generateUUID()">UUID</button>
+          <button onclick="generateToken()">Token</button>
+          <button onclick="generatePassword()">Password</button>
+          <button onclick="generateOTP()">OTP</button>
+        </div>
+        <div id="generatorsResult" class="result"></div>
+      </div>
+      <div class="demo-box">
+        <h3>Formatters</h3>
+        <div class="button-group">
+          <button onclick="formatCurrency()">Currency</button>
+          <button onclick="formatDate()">Date</button>
+          <button onclick="formatBytes()">Bytes</button>
+          <button onclick="formatDuration()">Duration</button>
+        </div>
+        <div id="formattersResult" class="result"></div>
+      </div>
+    </section>
+
+    <section id="test" class="panel">
+      <h2>🧪 Run Tests</h2>
+      <div class="demo-box">
+        <h3>Test Runner</h3>
+        <div class="button-group">
+          <button onclick="runAllTests()">▶ Run All Tests</button>
+          <button onclick="clearResults()">🗑 Clear</button>
+        </div>
+        <div id="testResults" class="result"></div>
+      </div>
+    </section>
+
+    <section id="docs" class="panel">
+      <h2>📖 Documentation</h2>
+      <div class="docs-grid">
+        <div class="doc-card">
+          <h3>Core Classes</h3>
+          <ul>
+            <li><code>Luxarion</code> - Main library class</li>
+            <li><code>HybridTypedArray</code> - Typed array with extra methods</li>
+            <li><code>FlexibleTypedArray</code> - Typed array with flexible types</li>
+            <li><code>OptimizedTypedArray</code> - Optimized typed array</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h3>Constants</h3>
+          <ul>
+            <li><code>NumericValues</code> - Zero, One, Pi, E, etc.</li>
+            <li><code>StringValues</code> - Empty, Space, Tab, etc.</li>
+            <li><code>BooleanValues</code> - True, False, Yes, No</li>
+            <li><code>StatusValues</code> - Created, Running, Error, etc.</li>
+            <li><code>HttpStatus</code> - OK, Created, Not Found, etc.</li>
+            <li><code>ContentTypes</code> - JSON, XML, HTML, etc.</li>
+            <li><code>ErrorCodes</code> - All error codes</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h3>Utilities</h3>
+          <ul>
+            <li><code>helpers</code> - deepClone, deepMerge, debounce, throttle</li>
+            <li><code>converters</code> - toNumber, toBase64, fromBase64</li>
+            <li><code>generators</code> - UUID, Token, OTP, Password</li>
+            <li><code>formatters</code> - Currency, Date, Time, Duration</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h3>Validators</h3>
+          <ul>
+            <li><code>EmailValidator</code> - Email validation</li>
+            <li><code>URLValidator</code> - URL validation</li>
+            <li><code>PhoneValidator</code> - Phone number validation</li>
+            <li><code>PasswordValidator</code> - Password strength validation</li>
+            <li><code>UUIDValidator</code> - UUID validation</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h3>Interfaces</h3>
+          <ul>
+            <li><code>IValidator</code> - Validator interface</li>
+            <li><code>IDataProcessor</code> - Data processor interface</li>
+            <li><code>IRepository</code> - Repository interface</li>
+            <li><code>IService</code> - Service interface</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h3>Enums</h3>
+          <ul>
+            <li><code>StatusEnum</code> - All status values</li>
+            <li><code>RoleEnum</code> - All role values</li>
+            <li><code>PermissionEnum</code> - All permission values</li>
+            <li><code>LogLevelEnum</code> - Log level values</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Eocs v1.0.0 - Built with ❤️ using pure JavaScript</p>
+      <p>
+        <a href="https://github.com/luxarionadm-design/Eocs" target="_blank">GitHub</a> |
+        <a href="https://github.com/luxarionadm-design/Eocs/issues" target="_blank">Issues</a> |
+        <a href="https://github.com/luxarionadm-design/Eocs#readme" target="_blank">README</a>
+      </p>
+    </footer>
+  </div>
+
+  <script type="module" src="/script.js"></script>
+</body>
+</html>
