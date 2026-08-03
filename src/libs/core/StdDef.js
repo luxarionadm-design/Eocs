@@ -3,17 +3,13 @@
  * @module StdDef
  * @namespace LXRN.Core
  * @memberof LXRN
- * 
- * @description
- * This module provides standard type definitions including size_t, ptrdiff_t,
- * nullptr_t, wchar_t, and related types following C++ standard library conventions.
- * All types are JavaScript equivalents for cross-platform compatibility.
- * 
+ * @description This module provides standard type definitions including size_t, 
+ * ptrdiff_t, nullptr_t, wchar_t, and related types following C++ standard library 
+ * conventions. All types are JavaScript equivalents for cross-platform compatibility.
  * @author LXRN Team
  * @version 1.0.0
  * @license MIT
  * @see https://github.com/luxarionadm-design/Eocs
- * 
  * @example
  * import { size_t, nullptr_t, EXIT_SUCCESS } from '@lxrn/core';
  * const size = size_t(1024);
