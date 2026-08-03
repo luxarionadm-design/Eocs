@@ -1,7 +1,7 @@
 {
-  "name": "eocs",
+  "name": "luxarion-editor",
   "version": "1.0.0",
-  "description": "Eocs - Luxarion Documentation and Web Server",
+  "description": "Luxarion - Complete JavaScript Utility Library Editor",
   "type": "module",
   "main": "server.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/luxarionadm-design/Eocs.git"
   },
-  "keywords": ["luxarion", "eocs", "documentation", "web", "server"],
+  "keywords": ["luxarion", "editor", "utility", "library"],
   "author": "luxarionadm-design",
   "license": "MIT",
   "bugs": {
