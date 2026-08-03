@@ -6,7 +6,7 @@
  * 
  * @description
  * The main LXRN module providing learning experience management capabilities.
- * Inspired by THREE.js architecture, this module handles learning experiences,
+ * Architecture, this module handles learning experiences,
  * collections, paths, and utilities for educational content management.
  * 
  * @author LXRN Team
