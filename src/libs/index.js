@@ -40,7 +40,7 @@ export * from './core/Types.js';
 export * from './core/Constants.js';
 export * from './core/ConstantsExtended.js';
 
-// LXRN - Learning Experience Reference Number (THREE.js style)
+// LXRN - Learning Experience Reference Number 
 export { LXRN } from './lxrn/LXRN.js';
 export { default as LXRN } from './lxrn/LXRN.js';
 
