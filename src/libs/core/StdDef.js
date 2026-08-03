@@ -1,44 +1,40 @@
+// stddef.ts
 /**
- * Standard Definitions for LXRN
+ * @fileoverview Standard Definitions for LXRN
+ * @module StdDef
  * @namespace LXRN.Core
  */
-export const StdDef = {
-  /**
-   * Size_t type - represents size of objects in bytes
-   * @type {Function}
-   */
-  size_t: Number,
-  
-  /**
-   * Nullptr_t type - represents null pointer
-   * @type {null}
-   */
-  nullptr_t: null,
-  
-  /**
-   * Wchar_t type - represents wide character
-   * @type {Function}
-   */
-  wchar_t: String,
-  
-  /**
-   * Exit success code
-   * @type {number}
-   */
-  EXIT_SUCCESS: 0,
-  
-  /**
-   * Exit failure code
-   * @type {number}
-   */
-  EXIT_FAILURE: 1
-};
 
-// Named exports
-export const { 
-  size_t, 
-  ptrdiff_t, 
-  nullptr_t, 
+export type size_t = number;
+export type ptrdiff_t = number;
+export type nullptr_t = null;
+export type wchar_t = string;
+export type char16_t = string;
+export type char32_t = string;
+
+export const size_t: size_t = Number as any;
+export const ptrdiff_t: ptrdiff_t = Number as any;
+export const nullptr_t: nullptr_t = null;
+export const wchar_t: wchar_t = String as any;
+export const char16_t: char16_t = String as any;
+export const char32_t: char32_t = String as any;
+
+export const SizeT = size_t;
+export const PtrdiffT = ptrdiff_t;
+export const NullptrT = nullptr_t;
+export const WcharT = wchar_t;
+
+export const max_align_t = Number;
+export const byte = Number;
+export const NULL = null;
+export const nullptr = null;
+export const EXIT_SUCCESS = 0;
+export const EXIT_FAILURE = 1;
+
+export default {
+  size_t,
+  ptrdiff_t,
+  nullptr_t,
   wchar_t,
   char16_t,
   char32_t,
@@ -51,7 +47,5 @@ export const {
   NULL,
   nullptr,
   EXIT_SUCCESS,
-  EXIT_FAILURE 
-} = StdDef;
-
-export default StdDef;
+  EXIT_FAILURE
+};
