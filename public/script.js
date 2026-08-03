@@ -11,7 +11,15 @@ import {
   formatters,
   StatusEnum,
   NumericValues,
-  StringValues
+  StringValues,
+  DataProcessor,
+  ImageProcessor,
+  TextProcessor,
+  MemoryRepository,
+  FileRepository,
+  AuthService,
+  CacheService,
+  LoggerService
 } from '../src/index.js';
 
 const lux = Luxarion.create();
@@ -21,10 +29,10 @@ console.log('Version:', lux.version);
 console.log('Status:', lux.getState().status);
 console.log('Repository: https://github.com/luxarionadm-design/Eocs');
 
-document.getElementById('moduleCount').textContent = '12';
-document.getElementById('methodCount').textContent = '150+';
-document.getElementById('fileCount').textContent = '42';
-document.getElementById('featureCount').textContent = '10';
+document.getElementById('moduleCount').textContent = '18';
+document.getElementById('methodCount').textContent = '200+';
+document.getElementById('fileCount').textContent = '55';
+document.getElementById('featureCount').textContent = '15';
 
 const tabs = document.querySelectorAll('.tab');
 const panels = document.querySelectorAll('.panel');
@@ -313,6 +321,53 @@ window.runAllTests = function() {
     }
   } catch (e) {
     output += `❌ Formatters: ${e.message}\n`;
+    failed++;
+  }
+
+  try {
+    const processor = new DataProcessor();
+    const resultData = processor.process([1, 2, 3]);
+    if (resultData && resultData.processed) {
+      output += '✅ DataProcessor: Works\n';
+      passed++;
+    } else {
+      output += '❌ DataProcessor: Failed\n';
+      failed++;
+    }
+  } catch (e) {
+    output += `❌ DataProcessor: ${e.message}\n`;
+    failed++;
+  }
+
+  try {
+    const repo = new MemoryRepository();
+    repo.create({ id: 1, name: 'test' });
+    const found = repo.findById(1);
+    if (found && found.name === 'test') {
+      output += '✅ MemoryRepository: Works\n';
+      passed++;
+    } else {
+      output += '❌ MemoryRepository: Failed\n';
+      failed++;
+    }
+  } catch (e) {
+    output += `❌ MemoryRepository: ${e.message}\n`;
+    failed++;
+  }
+
+  try {
+    const logger = new LoggerService();
+    logger.info('Test log');
+    const logs = logger.getLogs();
+    if (logs && logs.length > 0) {
+      output += '✅ LoggerService: Works\n';
+      passed++;
+    } else {
+      output += '❌ LoggerService: Failed\n';
+      failed++;
+    }
+  } catch (e) {
+    output += `❌ LoggerService: ${e.message}\n`;
     failed++;
   }
 
