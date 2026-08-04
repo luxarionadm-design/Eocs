@@ -17,16 +17,16 @@
  * obj.setRotationFromEuler(new Euler(Math.PI / 2, 0, 0));
  * obj.updateMatrix();
  */
-import { Vec3 } from './Vec3.js';
-import { Quat } from './Quat.js';
-import { Mat4 } from './Mat4.js';
-import { Mat3 } from './Mat3.js';
-import { Euler } from './Euler.js';
+import { Vec3 } from '../math/core/Vec3.js';
+import { Quat } from '../math/core/Quat.js';
+import { Mat4 } from '../math/core/Mat4.js';
+import { Mat3 } from '../math/core/Mat3.js';
+import { Euler } from '../math/core/Euler.js';
 import { EventDispatcher } from './EventDispatcher.js';
 import { Layers } from './Layers.js';
-import { MathUtils } from '../utils/MathUtils.js';
-import QuatExt from './extensions/QuatExt.js';
-import Mat4Ext from './extensions/Mat4Ext.js';
+import { MathUtils } from '../math/utils/MathUtils.js';
+import { QuatExt } from '../math/core/extensions/QuatExt.js';
+import { Mat4Ext } from '../math/core/extensions/Mat4Ext.js';
 
 function generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -87,7 +87,7 @@ class Object3D extends EventDispatcher {
 
         this.#position = new Vec3(0, 0, 0);
         this.#rotation = new Euler(0, 0, 0, 'XYZ');
-        this.#quaternion = new Quat(0, 0, 0, 1);
+        this.#quat = new Quat(0, 0, 0, 1);
         this.#scale = new Vec3(1, 1, 1);
         this.up = Object3D.DEFAULT_UP.clone();
 
@@ -119,7 +119,7 @@ class Object3D extends EventDispatcher {
         this.#predeleteOk = false;
         this.#isQueuedForDeletion = false;
         this.#rotationNeedsUpdate = false;
-        this.#quaternionNeedsUpdate = false;
+        this.#quatNeedsUpdate = false;
         this.#matrixNeedsUpdate = true;
 
         this.#notification(Object3D.NOTIFICATION_POST_INITIALIZE);
@@ -127,7 +127,7 @@ class Object3D extends EventDispatcher {
 
     /** @type {Vec3} */ #position;
     /** @type {Euler} */ #rotation;
-    /** @type {Quat} */ #quaternion;
+    /** @type {Quat} */ #quat;
     /** @type {Vec3} */ #scale;
     /** @type {object|null} */ #script;
     /** @type {Map<string, any>} */ #metadata;
@@ -138,12 +138,12 @@ class Object3D extends EventDispatcher {
     /** @type {boolean} */ #predeleteOk;
     /** @type {boolean} */ #isQueuedForDeletion;
     /** @type {boolean} */ #rotationNeedsUpdate;
-    /** @type {boolean} */ #quaternionNeedsUpdate;
+    /** @type {boolean} */ #quatNeedsUpdate;
     /** @type {boolean} */ #matrixNeedsUpdate;
 
     get position() { return this.#position; }
     get rotation() { return this.#rotation; }
-    get quaternion() { return this.#quaternion; }
+    get quat() { return this.#quat; }
     get scale() { return this.#scale; }
 
     setPosition(x, y, z) {
@@ -159,16 +159,16 @@ class Object3D extends EventDispatcher {
         return this;
     }
 
-    setRotationFromQuaternion(q) {
-        this.#quaternion.copy(q);
-        this.#quaternionNeedsUpdate = true;
+    setRotationFromQuat(q) {
+        this.#quat.copy(q);
+        this.#quatNeedsUpdate = true;
         this.#matrixNeedsUpdate = true;
         return this;
     }
 
     setRotationFromAxisAngle(axis, angle) {
-        this.#quaternion.setAxisAngle(axis, angle);
-        this.#quaternionNeedsUpdate = true;
+        this.#quat.setAxisAngle(axis, angle);
+        this.#quatNeedsUpdate = true;
         this.#matrixNeedsUpdate = true;
         return this;
     }
@@ -181,18 +181,18 @@ class Object3D extends EventDispatcher {
 
     updateMatrix() {
         if (this.#rotationNeedsUpdate) {
-            this.#quaternion = this.#rotation.toQuat();
+            this.#quat = this.#rotation.toQuat();
             this.#rotationNeedsUpdate = false;
         }
-        if (this.#quaternionNeedsUpdate) {
-            this.#rotation = Euler.fromQuat(this.#quaternion, this.#rotation.order);
-            this.#quaternionNeedsUpdate = false;
+        if (this.#quatNeedsUpdate) {
+            this.#rotation = Euler.fromQuat(this.#quat, this.#rotation.order);
+            this.#quatNeedsUpdate = false;
         }
 
         const m = _acquireMat4();
         m.setIdentity();
         m.scale(this.#scale.x, this.#scale.y, this.#scale.z);
-        m.mul(this.#quaternion.toMat4());
+        m.mul(this.#quat.toMat4());
         m.translate(this.#position.x, this.#position.y, this.#position.z);
 
         if (this.pivot) {
@@ -254,17 +254,17 @@ class Object3D extends EventDispatcher {
         const m = _acquireMat4();
         m.setMat4(mat);
         m.mul(this.matrix);
-        Mat4Ext.decompose(m, this.#position, this.#quaternion, this.#scale);
+        Mat4Ext.decompose(m, this.#position, this.#quat, this.#scale);
         _releaseMat4(m);
-        this.#quaternionNeedsUpdate = true;
+        this.#quatNeedsUpdate = true;
         this.#rotationNeedsUpdate = false;
         this.#matrixNeedsUpdate = true;
         return this;
     }
 
-    applyQuaternion(q) {
-        this.#quaternion.mul(q);
-        this.#quaternionNeedsUpdate = true;
+    applyQuat(q) {
+        this.#quat.mul(q);
+        this.#quatNeedsUpdate = true;
         this.#rotationNeedsUpdate = false;
         this.#matrixNeedsUpdate = true;
         return this;
@@ -272,16 +272,16 @@ class Object3D extends EventDispatcher {
 
     rotateOnAxis(axis, angle) {
         const q = Quat.fromAxisAngle(axis, angle);
-        this.#quaternion.mul(q);
-        this.#quaternionNeedsUpdate = true;
+        this.#quat.mul(q);
+        this.#quatNeedsUpdate = true;
         this.#matrixNeedsUpdate = true;
         return this;
     }
 
     rotateOnWorldAxis(axis, angle) {
         const q = Quat.fromAxisAngle(axis, angle);
-        this.#quaternion = q.mul(this.#quaternion);
-        this.#quaternionNeedsUpdate = true;
+        this.#quat = q.mul(this.#quat);
+        this.#quatNeedsUpdate = true;
         this.#matrixNeedsUpdate = true;
         return this;
     }
@@ -291,7 +291,7 @@ class Object3D extends EventDispatcher {
     rotateZ(angle) { return this.rotateOnAxis(_zAxis, angle); }
 
     translateOnAxis(axis, distance) {
-        const dir = axis.clone().applyQuaternion(this.#quaternion);
+        const dir = axis.clone().applyQuat(this.#quat);
         this.#position.add(dir.scale(distance));
         this.#matrixNeedsUpdate = true;
         return this;
@@ -321,15 +321,15 @@ class Object3D extends EventDispatcher {
             _tmpMat4.lookAt(targetVec, pos, this.up);
         }
 
-        this.#quaternion = Quat.fromMat3(_tmpMat4.toMat3());
+        this.#quat = Quat.fromMat3(_tmpMat4.toMat3());
 
         if (this.parent) {
             _tmpMat4.extractRotation(this.parent.matrixWorld);
             const parentQuat = Quat.fromMat3(_tmpMat4.toMat3());
-            this.#quaternion = parentQuat.inverse().mul(this.#quaternion);
+            this.#quat = parentQuat.inverse().mul(this.#quat);
         }
 
-        this.#quaternionNeedsUpdate = true;
+        this.#quatNeedsUpdate = true;
         this.#rotationNeedsUpdate = false;
         this.#matrixNeedsUpdate = true;
         return this;
@@ -342,7 +342,7 @@ class Object3D extends EventDispatcher {
         return target;
     }
 
-    getWorldQuaternion(target = new Quat()) {
+    getWorldQuat(target = new Quat()) {
         this.updateWorldMatrix(true, false);
         const pos = _tmpVec3;
         const scale = _tmpVec3;
@@ -656,7 +656,7 @@ class Object3D extends EventDispatcher {
     }
 
     setProperty(name, value, valid = null) {
-        const builtins = ['position', 'rotation', 'quaternion', 'scale', 'visible', 'name', 'renderOrder'];
+        const builtins = ['position', 'rotation', 'quat', 'scale', 'visible', 'name', 'renderOrder'];
         if (builtins.includes(name)) {
             if (this[name] && typeof this[name].copy === 'function') {
                 this[name].copy(value);
@@ -694,7 +694,7 @@ class Object3D extends EventDispatcher {
     }
 
     getProperty(name, valid = null) {
-        const builtins = ['position', 'rotation', 'quaternion', 'scale', 'visible', 'name', 'renderOrder'];
+        const builtins = ['position', 'rotation', 'quat', 'scale', 'visible', 'name', 'renderOrder'];
         if (builtins.includes(name)) {
             if (valid) valid.value = true;
             return this[name];
@@ -733,7 +733,7 @@ class Object3D extends EventDispatcher {
 
         list.push({ name: 'position', type: 'Vec3', usage: 'default' });
         list.push({ name: 'rotation', type: 'Euler', usage: 'default' });
-        list.push({ name: 'quaternion', type: 'Quat', usage: 'default' });
+        list.push({ name: 'quat', type: 'Quat', usage: 'default' });
         list.push({ name: 'scale', type: 'Vec3', usage: 'default' });
         list.push({ name: 'visible', type: 'bool', usage: 'default' });
         list.push({ name: 'name', type: 'string', usage: 'default' });
@@ -897,7 +897,7 @@ class Object3D extends EventDispatcher {
         this.up.copy(source.up);
         this.#position.copy(source.position);
         this.#rotation.order = source.rotation.order;
-        this.#quaternion.copy(source.quaternion);
+        this.#quat.copy(source.quat);
         this.#scale.copy(source.scale);
         this.pivot = source.pivot ? source.pivot.clone() : null;
         this.matrix.copy(source.matrix);
